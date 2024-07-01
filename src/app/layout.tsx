@@ -24,11 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang='en'>
+      <html lang="en">
         <body>
-          {children}
+          <main>
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
   );
 }
+
+

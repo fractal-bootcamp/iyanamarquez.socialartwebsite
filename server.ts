@@ -13,4 +13,14 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get("/createUser", (req, res) => {
+  res.send("Hello World!");
+});
+
+const port = process.env.PORT || 4001;
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
 export default app;

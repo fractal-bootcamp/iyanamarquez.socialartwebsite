@@ -1,10 +1,14 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
+import { useUser } from "@clerk/clerk-react";
+
 import Link from 'next/link'
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+
 
 
 const Navbar = () => {
-    const { isLoaded, userId, sessionId, getToken } = useAuth();
+    const { isSignedIn, user, isLoaded } = useUser();
 
     return (<header className="mb-auto flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-4">
         <nav className="w-full px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
@@ -22,17 +26,18 @@ const Navbar = () => {
                     <a className="font-medium text-black focus:outline-none focus:ring-1 focus:ring-gray-600" href="#" aria-current="page">Home</a>
                     <a className="font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 " href="#">Create</a>
                     <a className="font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 " href="#">Explore</a>
-                    {!userId &&
-
-
-                        <Link className='font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600' href="/login">login</Link>
-
-                    }
-
+                    <span>
+                        <SignedOut>
+                            <SignInButton signUpForceRedirectUrl={"/api/signupcallback"} />
+                        </SignedOut>
+                        <SignedIn >
+                            <UserButton />
+                        </SignedIn>
+                    </span>
                 </div>
             </div>
         </nav>
-    </header>)
+    </header >)
 }
 
 export default Navbar

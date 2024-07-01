@@ -1,22 +1,28 @@
 "use client";
 import Navbar from "./components/Navbar";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser, useClerk } from "@clerk/nextjs";
 
 
-export default function Home() {
-  const { isLoaded, userId, sessionId, getToken } = useAuth();
+
+const Home = () => {
+  const { userId, sessionId } = useAuth();
+  const { isSignedIn, user, } = useUser();
+
+
+  // const user = await currentUser();
+  // 
+  console.log(user)
 
   return (
     <>
       <Navbar />
       {userId && <span>
-        Hello, {userId} your current active session is {sessionId}
-
+        hello there {userId}
       </span>}
       <h1>
-        main pageefrnlvnw
+        {/* {!user && <div>Not signed in</div>} */}
       </h1>
     </>
   );
 }
+export default Home
