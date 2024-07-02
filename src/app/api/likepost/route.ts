@@ -11,32 +11,36 @@ export const config = {
   },
 };
 
-export const GET = optionalUser(async (req, res) => {
-  return Response.json({ data: "hEY I'm a thingy!" });
-});
-
 export const POST = optionalUser(
   async (req: NextRequest, res: NextResponse) => {
     if (req.method === "POST") {
       const data = await req.json();
-      const jsonData = JSON.stringify(data.postData);
-
-      console.log(req.user);
+      const user = req.user;
 
       try {
-        console.log("trying tooo ", jsonData);
-        const newPost = await prisma.post.create({
+        // Update the post with the new like count
+        console.log("help");
+        const updatedPost = await prisma.post.update({
+          where: {
+            id: data.postId,
+          },
           data: {
-            title: data.title,
-            postData: jsonData,
-            authorId: req.user.id,
-            username: req.user.username,
+            likedBy: {
+              connect: { id: user.id },
+            },
+          },
+          include: {
+            _count: {
+              select: { likedBy: true },
+            },
           },
         });
-        console.log("new post is made");
-        console.log(newPost);
-        return Response.json({ data: "made new post success" });
+        return Response.json({
+          data: updatedPost,
+          likeCount: updatedPost._count.likedBy,
+        });
       } catch (error) {
+        console.log("something failed");
         return Response.json({ data: error });
       }
     } else {

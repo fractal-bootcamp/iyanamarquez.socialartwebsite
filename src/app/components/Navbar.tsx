@@ -28,6 +28,8 @@ const Navbar = () => {
                     <Link href={"/"} className="font-medium text-black focus:outline-none focus:ring-1 focus:ring-gray-600">Home</Link>
                     <Link href={"/pages/newpost"} className="font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 ">Create</Link>
                     <Link href={"/pages/feed"} className="font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 ">Explore</Link>
+                    <Link href={"/pages/profile"} className="font-medium text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 ">My Art</Link>
+
                     <span>
                         <SignedOut>
                             <SignInButton signUpForceRedirectUrl={"/api/signupcallback"} />
