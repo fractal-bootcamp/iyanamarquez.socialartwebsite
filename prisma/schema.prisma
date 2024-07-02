@@ -31,6 +31,7 @@ model Post {
   title     String   @db.VarChar(255)
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
+  postData  Json
 }
 
 // posts can have one user
