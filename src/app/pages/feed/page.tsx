@@ -40,24 +40,32 @@ const
         };
 
         return (
-            <div className='bg-red-100 flex flex-row justify-center items-center flex-wrap'>
+            <div className=''>
                 <h1 className='text-black text-4xl font-bold my-4'>This is feed</h1>
                 <div>
-                    <ul className="flex flex-row flex-wrap justify-start content-center m-2">
+                    <div className="-mx-4 flex flex-wrap p-8">
                         {posts.map(post => (
-                            <div className="flex justify-center items-center p-2 h-full ">
-                                <div className="max-w-sm p-2 border border-black rounded-lg shadow bg-white">
+
+                            <div className="w-full px-4 md:w-1/2 lg:w-1/3">
+                                <div class="mb-9 rounded-xl py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9">
+                                    <h2 className="text-lg font-bold text-gray-800 mb-4" key={post.id}>{post.title}</h2>
+                                    <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac volutpat est.
+                                        Praesent id purus a nunc pharetra facilisis.
+                                    </p>
                                     <h4>Posted by: {post.author.username || 'Unknown'}</h4>
-                                    <li key={post.id}>{post.title}</li>
+
                                     <ArtBox details={JSON.parse(post.postData)} />
+
                                     <button onClick={() => handleLikes(post.id)}>
                                         Likes: {post._count.likedBy}
                                     </button>
                                 </div>
                             </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
+                {/* erm */}
+
             </div>
         );
     }

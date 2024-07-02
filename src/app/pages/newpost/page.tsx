@@ -57,19 +57,19 @@ const NewPost = () => {
                         </div>
                         <div>
                             <label className={labelStyle}>Scale val</label>
-                            <input onChange={handleChange} name="scale" type="text" className={inputStyle}></input>
+                            <input onChange={handleChange} name="scale" type="number" step="0.01" className={inputStyle}></input>
                         </div>
                         <div>
                             <label className={labelStyle}>Width val</label>
-                            <input onChange={handleChange} name="width" type="text" className={inputStyle}></input>
+                            <input onChange={handleChange} name="width" type="number" step="0.01" className={inputStyle}></input>
                         </div>
                         <div>
                             <label className={labelStyle}>Height val</label>
-                            <input onChange={handleChange} name="height" type="text" className={inputStyle}></input>
+                            <input onChange={handleChange} name="height" type="number" step="0.01" className={inputStyle}></input>
                         </div>
                         <div>
                             <label className={labelStyle}>Z val</label>
-                            <input onChange={handleChange} name="zVal" type="text" className={inputStyle}></input>
+                            <input onChange={handleChange} name="zVal" type="number" step="0.01" className={inputStyle}></input>
                         </div>
                     </div>
                     <button type="submit" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
