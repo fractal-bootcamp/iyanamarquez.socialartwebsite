@@ -23,14 +23,11 @@ const NewPost = () => {
     }
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
-        console.log(title);
+
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("bruhdata");
-        console.log(canvasDetails);
-        console.log({ title: title, postData: canvasDetails });
         const response = await fetch('/api/post', {
             method: 'POST',
             headers: {
@@ -39,7 +36,6 @@ const NewPost = () => {
             body: JSON.stringify({ title: title, postData: canvasDetails }),
         });
         const result = await response.json();
-        console.log(result);
         // setData(result);
     }
 

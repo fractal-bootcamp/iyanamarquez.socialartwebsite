@@ -15,10 +15,17 @@ export const config = {
 export const GET = optionalUser(async (req: NextRequest, res: NextResponse) => {
   if (req.method === "GET") {
     try {
-      const allPosts = await prisma.post.findMany();
-      console.log("grabbed posts");
-      console.log(allPosts);
-      return Response.json({ data: allPosts });
+      const posts = await prisma.post.findMany({
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+          _count: true,
+        },
+      });
+      return Response.json({ data: posts });
     } catch (error) {
       return Response.json({ data: "error grabbing posts" });
     }
