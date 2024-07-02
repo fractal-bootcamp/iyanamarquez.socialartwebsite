@@ -8,11 +8,8 @@ const NewPost = () => {
     const [canvasDetails, setCanvasDetails] = useState({ width: 2, height: 2, scale: 1, zVal: 2 });
     const [data, setData] = useState(null);
     const [title, setTitle] = useState('new post');
-
-
     const labelStyle = 'block mb-2 text-sm font-small text-gray-900'
     const inputStyle = 'bg-gray-50 border border-gray-300 text-gray-9000 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 mr-2 mb-2 '
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -25,18 +22,21 @@ const NewPost = () => {
         setTitle(e.target.value);
 
     }
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch('/api/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ title: title, postData: canvasDetails }),
-        });
-        const result = await response.json();
-        // setData(result);
+        try {
+            const response = await fetch('/api/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: title, postData: canvasDetails }),
+            });
+            const result = await response.json();
+            setData(result);
+        } catch (error) {
+            console.error('Error submitting post:', error);
+        }
     }
 
     return (
@@ -72,18 +72,14 @@ const NewPost = () => {
                             <input onChange={handleChange} name="zVal" type="text" className={inputStyle}></input>
                         </div>
                     </div>
-
                     <button type="submit" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                         Post
                     </button>
                 </form>
-
                 <div>
                 </div>
-
             </div>
         </div>)
-
 }
 
 export default NewPost

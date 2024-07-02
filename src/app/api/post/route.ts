@@ -1,6 +1,4 @@
 import { optionalUser } from "@/middleware/optionalUser";
-import { redirect } from "next/navigation";
-import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -21,8 +19,6 @@ export const POST = optionalUser(
       const data = await req.json();
       const jsonData = JSON.stringify(data.postData);
 
-      console.log(req.user);
-
       try {
         console.log("trying tooo ", jsonData);
         const newPost = await prisma.post.create({
@@ -30,11 +26,9 @@ export const POST = optionalUser(
             title: data.title,
             postData: jsonData,
             authorId: req.user.id,
-            username: req.user.username,
           },
         });
-        console.log("new post is made");
-        console.log(newPost);
+
         return Response.json({ data: "made new post success" });
       } catch (error) {
         return Response.json({ data: error });
