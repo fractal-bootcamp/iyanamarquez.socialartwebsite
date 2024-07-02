@@ -23,16 +23,18 @@ const
         return (
             <div>
                 <h1>This is feed</h1>
-                <ul>
-                    {posts.map(post => (
-                        <div className="flex justify-center items-center p-2 bg-red-200 h-full">
-                            <div className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow">
-                                <li key={post.id}>{post.title}</li>
-                                <ArtBox details={JSON.parse(post.postData)} />
+                <div className="p-4 ">
+                    <ul className=" flex flex-row flex-wrap gap-2 ">
+                        {posts.map(post => (
+                            <div className="p-2 ">
+                                <div className="max-w-sm p-2 bg-red-200 border border-gray-200 rounded-lg shadow ">
+                                    <li key={post.id}>{post.title}</li>
+                                    <ArtBox details={JSON.parse(post.postData)} />
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </ul>
+                        ))}
+                    </ul>
+                </div>
             </div>
         );
     }

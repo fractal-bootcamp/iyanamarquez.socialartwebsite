@@ -1,6 +1,4 @@
 import { optionalUser } from "@/middleware/optionalUser";
-import { redirect } from "next/navigation";
-import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
