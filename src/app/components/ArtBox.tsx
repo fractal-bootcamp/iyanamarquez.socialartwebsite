@@ -1,67 +1,43 @@
 // components/ThreeScene.js
 
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import gsap from 'gsap';
+import * as THREE from 'three'
+import { createRoot } from 'react-dom/client'
+import React, { useRef, useState } from 'react'
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 
-const ArtBox = () => {
-    const sceneRef = useRef(null);
-    const draggableRef = useRef(null);
 
-    useEffect(() => {
-        const draggable = draggableRef.current;
-        let offset = { x: 0, y: 0 };
-        let isDragging = false;
-
-        // Function to handle mouse down event
-        const onMouseDown = (event) => {
-            isDragging = true;
-            const rect = draggable.getBoundingClientRect();
-            offset.x = event.clientX - rect.left;
-            offset.y = event.clientY - rect.top;
-        };
-
-        // Function to handle mouse up event
-        const onMouseUp = () => {
-            isDragging = false;
-        };
-
-        // Function to handle mouse move event
-        const onMouseMove = (event) => {
-            if (isDragging) {
-                const x = event.clientX - offset.x;
-                const y = event.clientY - offset.y;
-                gsap.to(draggable, { x, y, duration: 0.1, ease: 'power2.out' }); // Use ease for smoother animation
-            }
-        };
-
-        // Add event listeners
-        draggable.addEventListener('mousedown', onMouseDown);
-        document.addEventListener('mouseup', onMouseUp);
-        document.addEventListener('mousemove', onMouseMove);
-
-        // Initial position calculation
-        const initialX = (window.innerWidth - draggable.offsetWidth) / 2;
-        const initialY = (window.innerHeight - draggable.offsetHeight) / 2;
-
-        // Set initial position
-        gsap.set(draggable, { x: initialX, y: initialY });
-
-        // Cleanup event listeners
-        return () => {
-            draggable.removeEventListener('mousedown', onMouseDown);
-            document.removeEventListener('mouseup', onMouseUp);
-            document.removeEventListener('mousemove', onMouseMove);
-        };
-    }, []);
-
+function Box(props: { position: [number, number, number]; scale: number; width: number; height: number; zVal: number }) {
+    const meshRef = useRef<THREE.Mesh>(null!)
+    const [hovered, setHover] = useState(false)
+    const [active, setActive] = useState(false)
+    useFrame((state, delta) => (meshRef.current.rotation.x += delta))
     return (
-        <div ref={sceneRef} style={{ width: '100%', height: '100vh', position: 'relative' }}>
-            <div ref={draggableRef} style={{ position: 'absolute', width: '100px', height: '100px', backgroundColor: 'red' }} />
-        </div>
-    );
-};
+        <mesh
+            {...props}
+            ref={meshRef}
+            // scale={active ? 1.5 : 2}
+            onClick={(event) => setActive(!active)}
+            onPointerOver={(event) => setHover(true)}
+            onPointerOut={(event) => setHover(false)}>
+            <boxGeometry args={[props.width, props.height, props.zVal]} />
+            <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+        </mesh>
+    )
+}
 
+const ArtBox = (props: { details: { scale: number, width: number, height: number, zVal: number } }) => {
+
+    // console.log(props.details)
+
+    return (<Canvas>
+        <ambientLight intensity={Math.PI / 2} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+        <pointLight position={[-10, -10, -10]} decay={2} intensity={Math.PI} />
+        <Box position={[-1.2, 0, 0]} scale={props.details.scale} width={props.details.width} height={props.details.height} zVal={props.details.zVal} />
+        <Box position={[1.2, 0, 0]} scale={props.details.scale} width={props.details.width} height={props.details.height} zVal={props.details.zVal} />
+    </Canvas>
+    )
+};
 
 
 export default ArtBox;
