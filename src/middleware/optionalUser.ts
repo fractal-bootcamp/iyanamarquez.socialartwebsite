@@ -1,7 +1,4 @@
-import { useAuth } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { useEffect } from "react";
-import { NextApiHandler } from "next";
 import prisma from "../../client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,7 +22,6 @@ export function optionalUser(handler: NextHandler): NextHandler {
       req.user = user;
     } else {
       const curr = await currentUser();
-
       // otherwise create a new user and append to request context
       req.user = await prisma.user.create({
         data: {
