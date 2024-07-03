@@ -1,8 +1,8 @@
-const Post = ()=>{
+const Post = () => {
 
     return <>
-    
-    
+        <p>post here</p>
+
     </>
 
 }

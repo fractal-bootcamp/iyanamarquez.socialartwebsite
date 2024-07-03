@@ -1,15 +1,11 @@
 "use client"
-import { useEffect, useState } from 'react';
-import ArtBox from '@/app/components/ArtBox';
+import Feed from "./pages/feed/page";
 
-const
-  Home = () => {
+const Home = () => {
 
-    return (
-      <div>
-        hello home page
-      </div>
-    );
-  }
+  return (
+    <Feed />
+  );
+}
 
 export default Home;

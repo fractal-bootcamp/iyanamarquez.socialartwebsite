@@ -1,16 +1,9 @@
 "use client";
-import { useAuth, useClerk } from "@clerk/nextjs";
-import { useUser } from "@clerk/clerk-react";
-
 import Link from 'next/link'
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-
-
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 const Navbar = () => {
-    const { isSignedIn, user, isLoaded } = useUser();
-
-    return (<header className="mb-auto flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-4">
+    return (<header className="mb-auto flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-4 shadow">
         <nav className="w-full px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <div className="flex items-center justify-between ">
                 <Link href={"/"} className="flex-none text-xl font-semibold text-black no-wrap">

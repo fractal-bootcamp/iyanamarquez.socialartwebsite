@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ArtBox from "@/app/components/ArtBox"
-import { Canvas } from "@react-three/fiber";
-const NewPost = () => {
+import { useRouter } from "next/navigation";
 
+const NewPost = () => {
     const [canvasDetails, setCanvasDetails] = useState({ width: 2, height: 2, scale: 1, zVal: 2 });
     const [data, setData] = useState(null);
     const [title, setTitle] = useState('new post');
@@ -22,6 +22,8 @@ const NewPost = () => {
         setTitle(e.target.value);
 
     }
+    const router = useRouter();
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -34,6 +36,7 @@ const NewPost = () => {
             });
             const result = await response.json();
             setData(result);
+            router.push('/pages/feed')
         } catch (error) {
             console.error('Error submitting post:', error);
         }
