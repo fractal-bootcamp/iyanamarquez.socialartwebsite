@@ -3,12 +3,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const config = {
-  api: {
-    bodyParser: true, // Ensure body parsing is enabled
-  },
-};
-
 export const GET = optionalUser(async (req, res) => {
   return Response.json({ data: "hEY I'm a thingy!" });
 });

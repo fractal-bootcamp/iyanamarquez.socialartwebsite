@@ -3,12 +3,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const config = {
-  api: {
-    bodyParser: true, // Ensure body parsing is enabled
-  },
-};
-
 //  Get all posts from current user
 export const GET = optionalUser(async (req, res) => {
   if (req.method === "GET") {

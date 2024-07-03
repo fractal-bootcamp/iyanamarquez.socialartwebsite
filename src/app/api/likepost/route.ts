@@ -4,12 +4,6 @@ import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-export const config = {
-  api: {
-    bodyParser: true, // Ensure body parsing is enabled
-  },
-};
-
 export const POST = optionalUser(async (req: NextRequest, res) => {
   if (req.method === "POST") {
     const data = await req.json();
