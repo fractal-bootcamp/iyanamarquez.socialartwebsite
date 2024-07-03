@@ -4,7 +4,7 @@ import ArtBox from '@/app/components/ArtBox';
 
 const
     Profile = () => {
-        const [posts, setPosts] = useState([]);
+        const [posts, setPosts] = useState<any>([]);
 
         useEffect(() => {
             const fetchPosts = async () => {
@@ -21,19 +21,24 @@ const
             fetchPosts();
         }, []);
         return (
-            <div>
-                <h1>This is feed</h1>
-                <div className="p-4 ">
-                    <ul className=" flex flex-row flex-wrap gap-2 ">
-                        {posts.map(post => (
-                            <div className="p-2 ">
-                                <div className="max-w-sm p-2 bg-red-200 border border-gray-200 rounded-lg shadow ">
-                                    <li key={post.id}>{post.title}</li>
+            <div className='mt-4'>
+                <h1 className='text-black text-4xl font-bold my-4 mx-4'>My Art</h1>
+                <div>
+                    <div className="-mx-4 flex flex-wrap p-8 bg-gray-100">
+                        {posts.map((post: any) => (
+
+                            <div className="w-full px-4 md:w-1/2 lg:w-1/4 ">
+                                <div className="mb-9 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9 border bg-white">
+                                    <h2 className="text-lg font-bold text-gray-800 mb-4" key={post.id}>{post.title}</h2>
+                                    {/* <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac volutpat est.
+                                        Praesent id purus a nunc pharetra facilisis.
+                                    </p> */}
+
                                     <ArtBox details={JSON.parse(post.postData)} />
                                 </div>
                             </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             </div>
         );

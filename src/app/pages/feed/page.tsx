@@ -2,64 +2,84 @@
 import { useEffect, useState } from 'react';
 import ArtBox from '@/app/components/ArtBox';
 
-const
-    Feed = () => {
-        const [posts, setPosts] = useState([]);
-        const fetchPosts = async () => {
-            try {
-                const response = await fetch('/api/allposts');
-                const data = await response.json();
-                // Sort posts by most recent
-                const sortedPosts = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setPosts(sortedPosts);
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-            }
-        };
+const Feed = () => {
+    const [posts, setPosts] = useState<any>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPosts, setTotalPosts] = useState(0);
+    const postsPerPage = 8;
 
-        useEffect(() => {
-            fetchPosts();
-        }, []);
+    const fetchPosts = async (page: number) => {
+        try {
+            const response = await fetch(`/api/allposts?page=${page}&limit=${postsPerPage}`);
+            const data = await response.json();
+            setPosts(data.data);
+            setTotalPosts(data.total);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    };
 
-        const handleLikes = async (postId: number) => {
-            try {
-                const response = await fetch(`/api/likepost`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ postId }),
-                });
-                const data = await response.json();
-                console.log('data')
-                console.log(data);
-            } catch (error) {
-                console.error('Error liking post:', error);
-            }
-            fetchPosts();
-        };
+    useEffect(() => {
+        fetchPosts(currentPage);
+    }, [currentPage]);
 
-        return (
-            <div className='bg-red-100 flex flex-row justify-center items-center flex-wrap'>
-                <h1 className='text-black text-4xl font-bold my-4'>This is feed</h1>
-                <div>
-                    <ul className="flex flex-row flex-wrap justify-start content-center m-2">
-                        {posts.map(post => (
-                            <div className="flex justify-center items-center p-2 h-full ">
-                                <div className="max-w-sm p-2 border border-black rounded-lg shadow bg-white">
-                                    <h4>Posted by: {post.author.username || 'Unknown'}</h4>
-                                    <li key={post.id}>{post.title}</li>
-                                    <ArtBox details={JSON.parse(post.postData)} />
-                                    <button onClick={() => handleLikes(post.id)}>
-                                        Likes: {post._count.likedBy}
-                                    </button>
-                                </div>
+    const handleLikes = async (postId: number) => {
+        try {
+            const response = await fetch(`/api/likepost`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ postId }),
+            });
+            const data = await response.json();
+            console.log('data')
+            console.log(data);
+        } catch (error) {
+            console.error('Error liking post:', error);
+        }
+        fetchPosts(currentPage);
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handlePreviousPage = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+
+    return (
+        <div>
+            <h1 className='text-black text-4xl font-bold my-4 flex justify-center'>This is feed</h1>
+            <div>
+                <div className="-mx-4 flex flex-wrap p-8">
+                    {posts.map((post: any, idx: number) => (
+                        <div className="w-full px-4 md:w-1/2 lg:w-1/4" key={idx}>
+                            <div className="mb-9 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9 border">
+                                <h2 className="text-lg font-bold text-gray-800 mb-4" key={post.id}>{post.title}</h2>
+                                <h4>Posted by: {post?.author?.username || 'Unknown'}</h4>
+
+                                <ArtBox details={JSON.parse(post?.postData)} />
+
+                                <button onClick={() => handleLikes(post?.id)}>
+                                    Likes: {post._count.likedBy}
+                                </button>
                             </div>
-                        ))}
-                    </ul>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex justify-center my-4">
+                    <button onClick={handlePreviousPage} disabled={currentPage === 1} className="mx-2 px-4 py-2 bg-gray-300 rounded disabled:hidden">
+                        Previous
+                    </button>
+                    <button onClick={handleNextPage} disabled={currentPage * postsPerPage >= totalPosts} className="mx-2 px-4 py-2 bg-gray-300 rounded disabled:hidden">
+                        Next
+                    </button>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+}
 
 export default Feed;

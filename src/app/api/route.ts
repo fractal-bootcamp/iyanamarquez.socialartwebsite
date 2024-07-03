@@ -4,7 +4,7 @@ const middleware = (fn: Function) => (req: Request, res: Response) => {
   return fn(req, res);
 };
 
-export const GET = middleware(async (req, res) => {
+export const GET = middleware(async (req: any, res: any) => {
   return Response.json({ data: "hEY I'm a thing!" });
 });
 

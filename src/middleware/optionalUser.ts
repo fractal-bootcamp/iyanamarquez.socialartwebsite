@@ -3,8 +3,11 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { useEffect } from "react";
 import { NextApiHandler } from "next";
 import prisma from "../../client";
+import { NextRequest, NextResponse } from "next/server";
 
-export function optionalUser(handler: NextApiHandler): NextApiHandler {
+type NextHandler = (req: NextRequest, res: NextResponse) => Promise<Response>;
+
+export function optionalUser(handler: NextHandler): NextHandler {
   return async (req, res) => {
     const clerkId = auth().userId;
 

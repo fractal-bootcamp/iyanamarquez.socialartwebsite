@@ -10,8 +10,11 @@ export const config = {
 };
 
 //  Get all posts from current user
-export const GET = optionalUser(async (req: NextRequest, res: NextResponse) => {
+export const GET = optionalUser(async (req, res) => {
   if (req.method === "GET") {
+    if (!req.user) {
+      return Response.json({ data: "user not logged in" });
+    }
     try {
       const allUsersPosts = await prisma.post.findMany({
         where: {
@@ -23,7 +26,7 @@ export const GET = optionalUser(async (req: NextRequest, res: NextResponse) => {
       return Response.json({ data: "error grabbing posts" });
     }
   } else {
-    res.setHeader("Allow", ["POST"]);
+    // res.setHeader("Allow", ["POST"]);
     return Response.json({ data: "something weird happened" });
   }
 });
